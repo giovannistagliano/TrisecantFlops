@@ -1,0 +1,17 @@
+-- -*- M2-comint -*- hash: 860516989
+
+i1 : f = extend example 1;
+
+o1 : SpecialRationalMap (dominant rational map from PP^5 to PP^4)
+
+i2 : S = specialBaseLocus f;
+
+                 ZZ
+o2 : Ideal of --------[x , x , x , x , x , x ]
+              10000019  0   1   2   3   4   5
+
+i3 : ideal matrix f == ideal matrix rationalMap(S,5,2)
+
+o3 = true
+
+i4 : 

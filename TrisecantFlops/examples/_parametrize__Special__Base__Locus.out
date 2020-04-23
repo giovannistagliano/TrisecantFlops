@@ -1,0 +1,15 @@
+-- -*- M2-comint -*- hash: 275845292
+
+i1 : f = extend example 1;
+
+o1 : SpecialRationalMap (dominant rational map from PP^5 to PP^4)
+
+i2 : j = parametrizeSpecialBaseLocus f;
+
+o2 : RationalMap (rational map from PP^2 to PP^5)
+
+i3 : image j == specialBaseLocus f
+
+o3 = true
+
+i4 : 
