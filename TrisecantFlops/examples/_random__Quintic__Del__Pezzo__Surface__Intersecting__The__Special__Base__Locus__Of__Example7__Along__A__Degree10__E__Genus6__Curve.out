@@ -7,18 +7,19 @@ o1 : SpecialRationalMap (birational map from hypersurface in PP^5 to 4-dimension
 i2 : S = specialBaseLocus f;
 
                  ZZ
-o2 : Ideal of --------[x , x , x , x , x , x ]
-              10000019  0   1   2   3   4   5
+o2 : Ideal of --------[x ..x ]
+              10000019  0   5
 
 i3 : D = randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegree10EGenus6Curve();
 
                  ZZ
-o3 : Ideal of --------[x , x , x , x , x , x ]
-              10000019  0   1   2   3   4   5
+o3 : Ideal of --------[x ..x ]
+              10000019  0   5
 
 i4 : ?D
 
-o4 = smooth surface of degree 5 in PP^5 cut out by 5 hypersurfaces of degree 2
+o4 = smooth surface of degree 5 and sectional genus 1 in PP^5 cut out by 5
+     hypersurfaces of degree 2
 
 i5 : (codim(D+S), degree(D+S))
 

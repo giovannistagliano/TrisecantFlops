@@ -1,4 +1,4 @@
--- -*- M2-comint -*- hash: 1166043503
+-- -*- M2-comint -*- hash: 296286971
 
 i1 : mu = example 3;
 
@@ -18,26 +18,28 @@ o2 = rational map defined by forms of degree 9 having points of multiplicity 2
 i3 : S = specialBaseLocus mu;
 
                  ZZ
-o3 : Ideal of --------[x , x , x , x , x , x ]
-              10000019  0   1   2   3   4   5
+o3 : Ideal of --------[x ..x ]
+              10000019  0   5
 
 i4 : ? S
 
-o4 = surface of degree 10 in PP^5 cut out by 10 hypersurfaces of degree 3
+o4 = surface of degree 10 and sectional genus 6 in PP^5 cut out by 10
+     hypersurfaces of degree 3
 
 i5 : U = specialBaseLocus inverse mu;
 
                  ZZ
-o5 : Ideal of --------[x , x , x , x , x ]
-              10000019  0   1   2   3   4
+o5 : Ideal of --------[x ..x ]
+              10000019  0   4
 
-i6 : U == associatedK3surface 3
+i6 : U == nonMinimalAssociatedK3surface 3
 
 o6 = true
 
 i7 : ? U
 
-o7 = surface of degree 12 in PP^4 cut out by 9 hypersurfaces of degree 5
+o7 = surface of degree 12 and sectional genus 14 in PP^4 cut out by 9
+     hypersurfaces of degree 5
 
 i8 : mu' = extend mu;
 
@@ -46,8 +48,8 @@ o8 : SpecialRationalMap (dominant rational map from PP^5 to PP^4)
 i9 : fibre = mu'^*(point target mu');
 
                  ZZ
-o9 : Ideal of --------[x , x , x , x , x , x ]
-              10000019  0   1   2   3   4   5
+o9 : Ideal of --------[x ..x ]
+              10000019  0   5
 
 i10 : ? fibre
 
@@ -58,24 +60,24 @@ i11 : degree(S + fibre)
 o11 = 5
 
 i12 : ///for i to 17 do (<<i; time example i)///;
-0     -- used 10.2844 seconds
-1     -- used 1.14676 seconds
-2     -- used 0.852654 seconds
-3     -- used 1.15375 seconds
-4     -- used 0.771709 seconds
-5     -- used 12.2349 seconds
-6     -- used 3.49392 seconds
-7     -- used 3.44579 seconds
-8     -- used 177.589 seconds
-9     -- used 580.503 seconds
-10     -- used 58.0905 seconds
-11     -- used 5.5671 seconds
-12     -- used 12.9707 seconds
-13     -- used 3.74768 seconds
-14     -- used 25.7596 seconds
-15     -- used 121.736 seconds
-16     -- used 657.298 seconds
-17     -- used 32.9385 seconds
+0     -- used 9.95438 seconds
+1     -- used 1.09944 seconds
+2     -- used 0.933729 seconds
+3     -- used 1.12644 seconds
+4     -- used 0.8203 seconds
+5     -- used 11.4551 seconds
+6     -- used 3.38757 seconds
+7     -- used 3.57946 seconds
+8     -- used 162.847 seconds
+9     -- used 555.309 seconds
+10     -- used 59.2267 seconds
+11     -- used 6.00626 seconds
+12     -- used 13.175 seconds
+13     -- used 3.67424 seconds
+14     -- used 24.7608 seconds
+15     -- used 111.319 seconds
+16     -- used 625.068 seconds
+17     -- used 31.1299 seconds
 
 i13 : describe example(,3)
 
@@ -83,7 +85,7 @@ o13 = rational map defined by forms of degree 3
       source variety: smooth cubic hypersurface in PP^5
       target variety: 4-dimensional variety of degree 20 in PP^8 cut out by 16 hypersurfaces of degree 3
       dominance: true
-      birationality: true (the inverse map is known)
+      birationality: true (the inverse map is already calculated)
       projective degrees: {3, 9, 17, 21, 20}
       number of minimal representatives: 1
       dimension base locus: 2
@@ -96,7 +98,7 @@ o14 = rational map defined by forms of degree 5
       source variety: PP^4
       target variety: 4-dimensional variety of degree 20 in PP^8 cut out by 16 hypersurfaces of degree 3
       dominance: true
-      birationality: true (the inverse map is known)
+      birationality: true (the inverse map is already calculated)
       projective degrees: {1, 5, 13, 19, 20}
       number of minimal representatives: 1
       dimension base locus: 2
