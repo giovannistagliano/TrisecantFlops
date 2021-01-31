@@ -1,24 +1,24 @@
 beginDocumentation() 
 document { 
 Key => TrisecantFlops, 
-Headline => "Some examples of Trisecant Flops"
-},
+Headline => "Some examples of Trisecant Flops",
+Contributors => {UL {{"Francesco Russo <",HREF{"mailto: frusso@dmi.unict.it","frusso@dmi.unict.it"},">"}}}},
 document { 
 Key => {example,(example,ZZ),(example,Nothing,ZZ),(example,ZZ,Nothing),[example,Verbose]}, 
 Headline => "examples of Trisecant Flops", 
 Usage => "example i", 
 Inputs => {"i" => ZZ => {"an integer between 0 and 17"}},
-Outputs => {RationalMap => {"the i-th example of birational map ",TEX///$X-->W$///," in accordance to the Table 1 in the paper ",HREF{"https://arxiv.org/abs/1909.01263","Trisecant Flops, their associated K3 surfaces and the rationality of some Fano fourfolds"},"."}}, 
+Outputs => {RationalMap => {"the i-th example of birational map ",TEX///$X\dashrightarrow W$///," in accordance to the Table 1 in the paper ",HREF{"https://arxiv.org/abs/1909.01263","Trisecant Flops, their associated K3 surfaces and the rationality of some Fano fourfolds"},"."}}, 
 PARA{"In the following, we consider the third example and we call some methods to analyze the data."},
 EXAMPLE {"mu = example 3;","describe inverse mu","S = specialBaseLocus mu;",
-         "? S","U = specialBaseLocus inverse mu;","U == associatedK3surface 3","? U","mu' = extend mu;",
+         "? S","U = specialBaseLocus inverse mu;","U == nonMinimalAssociatedK3surface 3","? U","mu' = extend mu;",
          "fibre = mu'^*(point target mu');","? fibre","degree(S + fibre)"},
 PARA{"Below we show the time needed to execute each example."},
 EXAMPLE {"///for i from 1 to 17 do (<<i; time example i)///;"},
-PARA{"The commands ",TT "example(,i)"," and ",TT "example(i,)"," produce, respectively, the birational maps ",TEX///$X-->Y$///," and ",TEX///$W-->Y$///," in the diagram (0.1) of the aforementioned paper."},
+PARA{"The commands ",TT "example(,i)"," and ",TT "example(i,)"," produce, respectively, the birational maps ",TEX///$X\dashrightarrow Y$///," and ",TEX///$W\dashrightarrow Y$///," in the diagram (0.1) of the aforementioned paper."},
 EXAMPLE {"describe example(,3)", "describe example(3,)"}
 },
-undocumented {associatedK3surface,(associatedK3surface,ZZ),
+undocumented {nonMinimalAssociatedK3surface,(nonMinimalAssociatedK3surface,ZZ),
               specialRationalMap,
               (specialRationalMap,List),
               (specialRationalMap,Ideal,ZZ,ZZ),
