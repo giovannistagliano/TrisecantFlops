@@ -3,23 +3,23 @@
 --   viewHelp TrisecantFlops
 ----------------------------------------------------------------
 
-if version#"VERSION" < "1.14" then error "this package requires Macaulay2 version 1.14 or newer";
+if version#"VERSION" < "1.17" then error "this package requires Macaulay2 version 1.17 or newer";
 
 newPackage(
        "TrisecantFlops",
-    	Version => "1.2", 
-        Date => "November 17, 2019",
+    	Version => "1.2.1", 
+        Date => "January 31, 2021",
     	Headline => "Some examples of Trisecant Flops",
-        Authors => {{Name => "Francesco Russo", Email => "frusso@dmi.unict.it"},
-                    {Name => "Giovanni Staglianò", Email => "giovannistagliano@gmail.com"}},
-        PackageExports => {"Cremona", "Resultants"},
+        Authors => {{Name => "Giovanni Staglianò", Email => "giovannistagliano@gmail.com"}},
+        PackageImports => {"PrimaryDecomposition","SpecialFanoFourfolds"},
+        PackageExports => {"SpecialFanoFourfolds"},
         AuxiliaryFiles => true,
         CacheExampleOutput => true,
         DebuggingMode => false,
         Reload => false
 );
 
-export{"example", "associatedK3surface", "specialBaseLocus", "parametrizeSpecialBaseLocus", "specialRationalMap", "randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegree10EGenus6Curve"};
+export{"example", "specialBaseLocus", "parametrizeSpecialBaseLocus", "nonMinimalAssociatedK3surface", "specialRationalMap", "randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegree10EGenus6Curve"};
 
 dir := searchPath "TrisecantFlops/SRM.m2";
 if #dir == 0 then error "can't locate directory TrisecantFLops";
@@ -46,8 +46,8 @@ example (ZZ) := o -> (jj) -> (
     return eX_jj;
 );
 
-associatedK3surface = method();
-associatedK3surface (ZZ) := (jj) -> (
+nonMinimalAssociatedK3surface = method();
+nonMinimalAssociatedK3surface (ZZ) := (jj) -> (
     f := example jj;
     if jj == 10 or jj == 14 or jj == 16 or jj == 17 then return (value get(dir|toString(jj)|"ass.dat"))(gens ambient target f) else return trim lift(specialBaseLocus inverse f,ambient target f);
 );
@@ -98,7 +98,7 @@ randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegre
    assert(h == rationalMap(source h,target h,M));
    J := top ideal lift(M,ring S);
    D := first select(unique apply(entries transpose mingens kernel matrix select(entries transpose syz gens J,g -> max flatten degrees ideal g == 1),g' -> trim ideal g'),i -> dim i >= 1);
-   assert(? D == "smooth surface of degree 5 in PP^5 cut out by 5 hypersurfaces of degree 2" and dim(D + S) == 2 and degree(D + S) == 10);
+   assert(? D == "smooth surface of degree 5 and sectional genus 1 in PP^5 cut out by 5 hypersurfaces of degree 2" and dim(D + S) == 2 and degree(D + S) == 10);
    D
 );
 
