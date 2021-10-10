@@ -1,4 +1,4 @@
--- -*- M2-comint -*- hash: 296286971
+-- -*- M2-comint -*- hash: 222471544
 
 i1 : mu = example 3;
 
@@ -26,40 +26,44 @@ i4 : ? S
 o4 = surface of degree 10 and sectional genus 6 in PP^5 cut out by 10
      hypersurfaces of degree 3
 
-i5 : U = specialBaseLocus inverse mu;
+i5 : parametrizeSpecialBaseLocus mu;
+
+o5 : RationalMap (rational map from PP^2 to PP^5)
+
+i6 : U = specialBaseLocus inverse mu;
 
                  ZZ
-o5 : Ideal of --------[x ..x ]
+o6 : Ideal of --------[x ..x ]
               10000019  0   4
 
-i6 : U == nonMinimalAssociatedK3surface 3
+i7 : U == nonMinimalAssociatedK3surface 3
 
-o6 = true
+o7 = true
 
-i7 : ? U
+i8 : ? U
 
-o7 = surface of degree 12 and sectional genus 14 in PP^4 cut out by 9
+o8 = surface of degree 12 and sectional genus 14 in PP^4 cut out by 9
      hypersurfaces of degree 5
 
-i8 : mu' = extend mu;
+i9 : mu' = extend mu;
 
-o8 : SpecialRationalMap (dominant rational map from PP^5 to PP^4)
+o9 : SpecialRationalMap (dominant rational map from PP^5 to PP^4)
 
-i9 : fibre = mu'^*(point target mu');
+i10 : fibre = mu'^*(point target mu');
 
-                 ZZ
-o9 : Ideal of --------[x ..x ]
-              10000019  0   5
+                  ZZ
+o10 : Ideal of --------[x ..x ]
+               10000019  0   5
 
-i10 : ? fibre
+i11 : ? fibre
 
-o10 = irreducible conic curve in PP^5
+o11 = irreducible conic curve in PP^5
 
-i11 : degree(S + fibre)
+i12 : degree(S + fibre)
 
-o11 = 5
+o12 = 5
 
-i12 : ///for i to 17 do (<<i; time example i)///;
+i13 : ///for i from 1 to 17 do (<<i; time example i)///;
 0     -- used 9.95438 seconds
 1     -- used 1.09944 seconds
 2     -- used 0.933729 seconds
@@ -79,9 +83,9 @@ i12 : ///for i to 17 do (<<i; time example i)///;
 16     -- used 625.068 seconds
 17     -- used 31.1299 seconds
 
-i13 : describe example(,3)
+i14 : describe example(,3)
 
-o13 = rational map defined by forms of degree 3
+o14 = rational map defined by forms of degree 3
       source variety: smooth cubic hypersurface in PP^5
       target variety: 4-dimensional variety of degree 20 in PP^8 cut out by 16 hypersurfaces of degree 3
       dominance: true
@@ -92,9 +96,9 @@ o13 = rational map defined by forms of degree 3
       degree base locus: 10
       coefficient ring: ZZ/10000019
 
-i14 : describe example(3,)
+i15 : describe example(3,)
 
-o14 = rational map defined by forms of degree 5
+o15 = rational map defined by forms of degree 5
       source variety: PP^4
       target variety: 4-dimensional variety of degree 20 in PP^8 cut out by 16 hypersurfaces of degree 3
       dominance: true
@@ -105,4 +109,4 @@ o14 = rational map defined by forms of degree 5
       degree base locus: 12
       coefficient ring: ZZ/10000019
 
-i15 : 
+i16 : 

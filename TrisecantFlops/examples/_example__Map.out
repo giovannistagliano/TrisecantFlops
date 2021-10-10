@@ -1,0 +1,86 @@
+-- -*- M2-comint -*- hash: -206897503
+
+i1 : psi = exampleMap 7;
+
+o1 : MultirationalMap (birational map from cubic fourfold containing a surface of degree 10 and sectional genus 6 to GM fourfold containing a surface of degree 14 and sectional genus 8)
+
+i2 : X = source psi;
+
+o2 : ProjectiveVariety, cubic fourfold containing a surface of degree 10 and sectional genus 6
+
+i3 : describe X
+
+o3 = Special cubic fourfold of discriminant 14
+     containing a 1-nodal surface of degree 10 and sectional genus 6
+     cut out by 10 hypersurfaces of degree 3
+
+i4 : Y = target psi;
+
+o4 : ProjectiveVariety, GM fourfold containing a surface of degree 14 and sectional genus 8
+
+i5 : describe Y
+
+o5 = Special Gushel-Mukai fourfold of discriminant 10(')
+     containing a surface in PP^8 of degree 14 and sectional genus 8
+     cut out by 15 hypersurfaces of degree 2
+     and with class in G(1,4) given by 9*s_(3,1)+5*s_(2,2)
+     Type: ordinary
+     (case 3 of Table 1 in arXiv:2002.07026)
+
+i6 : S = surface X;
+
+o6 : ProjectiveVariety, surface in PP^5
+
+i7 : T = surface Y;
+
+o7 : ProjectiveVariety, surface in PP^8
+
+i8 : psi;
+
+o8 : MultirationalMap (birational map from X to Y)
+
+i9 : eta = inverse psi;
+
+o9 : MultirationalMap (birational map from Y to X)
+
+i10 : Psi = extend psi;
+
+o10 : MultirationalMap (dominant rational map from PP^5 to Y)
+
+i11 : F = Psi^* point Y;
+
+o11 : ProjectiveVariety, curve in PP^5
+
+i12 : (describe F,describe (F*S))
+
+o12 = (ambient:.............. PP^5    , ambient:.............. PP^5        )
+       dim:.................. 1         dim:.................. 0
+       codim:................ 4         codim:................ 5
+       degree:............... 3         degree:............... 8
+       generators:........... 1^2 2^3   generators:........... 1^2 2^3 3^2 
+       purity:............... true      purity:............... true
+       dim sing. l.:......... -1        dim sing. l.:......... -1
+
+o12 : Sequence
+
+i13 : Eta = extend eta;
+
+o13 : MultirationalMap (dominant rational map from 5-dimensional subvariety of PP^8 to X)
+
+i14 : G = Eta^* point X;
+
+o14 : ProjectiveVariety, curve in PP^8
+
+i15 : (describe G,describe (G*T))
+
+o15 = (ambient:.............. PP^8    , ambient:.............. PP^8    )
+       dim:.................. 1         dim:.................. 0
+       codim:................ 7         codim:................ 8
+       degree:............... 3         degree:............... 5
+       generators:........... 1^5 2^3   generators:........... 1^5 2^5 
+       purity:............... true      purity:............... true
+       dim sing. l.:......... -1        dim sing. l.:......... -1
+
+o15 : Sequence
+
+i16 : 
