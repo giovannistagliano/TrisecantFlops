@@ -3,12 +3,12 @@
 --   viewHelp TrisecantFlops
 ----------------------------------------------------------------
 
-if version#"VERSION" < "1.17" then error "this package requires Macaulay2 version 1.17 or newer";
+if version#"VERSION" < "1.18" then error "this package requires Macaulay2 version 1.17 or newer";
 
 newPackage(
        "TrisecantFlops",
-    	Version => "1.2.1", 
-        Date => "January 31, 2021",
+    	Version => "1.3", 
+        Date => "October 10, 2021",
     	Headline => "Some examples of Trisecant Flops",
         Authors => {{Name => "Giovanni Staglianò", Email => "giovannistagliano@gmail.com"}},
         PackageImports => {"PrimaryDecomposition","SpecialFanoFourfolds"},
@@ -19,7 +19,17 @@ newPackage(
         Reload => false
 );
 
-export{"example", "specialBaseLocus", "parametrizeSpecialBaseLocus", "nonMinimalAssociatedK3surface", "specialRationalMap", "randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegree10EGenus6Curve"};
+if SpecialFanoFourfolds.Options.Version < "2.4" then (
+    <<endl<<"Your version of the SpecialFanoFourfolds package is outdated (required version 2.4 or newer);"<<endl;
+    <<"you can manually download the latest version from"<<endl;
+    <<"https://github.com/Macaulay2/M2/tree/development/M2/Macaulay2/packages."<<endl;
+    <<"To automatically download the latest version of SpecialFanoFourfolds in your current directory,"<<endl;
+    <<"you may run the following Macaulay2 code:"<<endl<<"***"<<endl<<endl;
+    <<///run "curl -s -o SpecialFanoFourfolds.m2 https://raw.githubusercontent.com/Macaulay2/M2/development/M2/Macaulay2/packages/SpecialFanoFourfolds.m2";///<<endl<<endl<<"***"<<endl;
+    error "required SpecialFanoFourfolds package version 2.4 or newer";
+);
+
+export{"example", "exampleMap", "specialBaseLocus", "parametrizeSpecialBaseLocus", "nonMinimalAssociatedK3surface", "specialRationalMap", "randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegree10EGenus6Curve"};
 
 dir := searchPath "TrisecantFlops/SRM.m2";
 if #dir == 0 then error "can't locate directory TrisecantFLops";
@@ -99,7 +109,51 @@ randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegre
    J := top ideal lift(M,ring S);
    D := first select(unique apply(entries transpose mingens kernel matrix select(entries transpose syz gens J,g -> max flatten degrees ideal g == 1),g' -> trim ideal g'),i -> dim i >= 1);
    assert(? D == "smooth surface of degree 5 and sectional genus 1 in PP^5 cut out by 5 hypersurfaces of degree 2" and dim(D + S) == 2 and degree(D + S) == 10);
-   D
+   projectiveVariety(D,MinimalGenerators=>false,Saturate=>false)
+);
+
+exampleMap = method(Options => {Verbose => false});
+surface EmbeddedProjectiveVariety := X -> X#"SurfaceContainedInTheFourfold";
+extend MultirationalMap := o -> Phi -> Phi.cache#"extension";
+exampleMap ZZ := o -> i -> (
+    N := {(0,5),(1,0),(2,3),(3,0),(4,1),(5,6),(6,0),(7,1),(8,0),(9,0),(10,0),(11,3),(12,3),(13,0),(14,4),(15,0),(16,3),(17,0)};
+    E := {(0,-23),(1,11),(2,-14),(3,13),(4,-1),(5,-32),(6,27),(7,18),(8,46),(9,70),(10,14),(11,-14),(12,-14),(13,8),(14,-20),(15,29),(16,-2),(17,16)};
+    f := example(i,Verbose=>o.Verbose);
+    X := specialCubicFourfold(specialBaseLocus f,ideal source f,InputCheck=>0,NumNodes=>(last N_i));
+    (surface X).cache#"euler" = last E_i;
+    Y := projectiveVariety(target f,MinimalGenerators=>false,Saturate=>false);
+    T := projectiveVariety(nonMinimalAssociatedK3surface i,MinimalGenerators=>false,Saturate=>false);
+    if i == 7 then Y = specialGushelMukaiFourfold(T,Y,InputCheck=>0);
+    if i == 15 then Y = specialCubicFourfold(T,Y,InputCheck=>0,NumNodes=>(last N_15)); 
+    if i != 7 and i != 15 then Y#"SurfaceContainedInTheFourfold" = T;
+    F := multirationalMap f#"rationalMap";
+    assert(ring target F === ring Y);
+    F#"target" = Y;
+    assert(ring source F === ring X);
+    F#"source" = X;
+    Fe := multirationalMap (extend f)#"rationalMap";
+    assert(ring target Fe === ring Y);
+    Fe#"target" = Y;
+    F.cache#"extension" = Fe;
+    if F#"inverse" =!= null or not(i == 10 or i == 14 or i == 16 or i == 17) then (
+        assert(F#"inverse" =!= null);
+        assert(ring target inverse F === ring X);
+        (inverse F)#"target" = X;
+        assert(ring source inverse F === ring Y);
+        (inverse F)#"source" = Y;
+        Ge := multirationalMap (extend inverse f)#"rationalMap";
+        assert(ring target Ge === ring X);
+        Ge#"target" = X;
+        if i == 7 then (
+            assert(ideal ring source Ge === ideal grassmannianHull Y);
+            (surface Y).cache#"euler" = 24;
+        );
+        if i == 15 then (
+            (surface Y).cache#"euler" = last E_15;
+        );
+        (inverse F).cache#"extension" = Ge;
+    );
+    F
 );
 
 load (dir|"doc.m2");
