@@ -63,7 +63,7 @@ i12 : degree(S + fibre)
 
 o12 = 5
 
-i13 : ///for i from 1 to 17 do (<<i; time example i)///;
+i13 : ///for i to 17 do (<<i; time example i)///;
 0     -- used 9.95438 seconds
 1     -- used 1.09944 seconds
 2     -- used 0.933729 seconds
