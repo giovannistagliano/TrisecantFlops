@@ -113,9 +113,11 @@ randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegre
 );
 
 exampleMap = method(Options => {Verbose => false});
+EXmap := local EXmap;
 surface EmbeddedProjectiveVariety := X -> X#"SurfaceContainedInTheFourfold";
 extend MultirationalMap := o -> Phi -> Phi.cache#"extension";
 exampleMap ZZ := o -> i -> (
+    if instance(EXmap_i,MultirationalMap) then return EXmap_i;
     N := {(0,5),(1,0),(2,3),(3,0),(4,1),(5,6),(6,0),(7,1),(8,0),(9,0),(10,0),(11,3),(12,3),(13,0),(14,4),(15,0),(16,3),(17,0)};
     E := {(0,-23),(1,11),(2,-14),(3,13),(4,-1),(5,-32),(6,27),(7,18),(8,46),(9,70),(10,14),(11,-14),(12,-14),(13,8),(14,-20),(15,29),(16,-2),(17,16)};
     f := example(i,Verbose=>o.Verbose);
@@ -152,8 +154,9 @@ exampleMap ZZ := o -> i -> (
             (surface Y).cache#"euler" = last E_15;
         );
         (inverse F).cache#"extension" = Ge;
+        X.cache#"rationalParametrization" = inverse F;
     );
-    F
+    EXmap_i = F
 );
 
 load (dir|"doc.m2");
