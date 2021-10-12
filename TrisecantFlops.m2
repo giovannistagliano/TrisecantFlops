@@ -29,7 +29,15 @@ if SpecialFanoFourfolds.Options.Version < "2.4" then (
     error "required SpecialFanoFourfolds package version 2.4 or newer";
 );
 
-export{"example", "exampleMap", "specialBaseLocus", "parametrizeSpecialBaseLocus", "nonMinimalAssociatedK3surface", "specialRationalMap", "randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegree10EGenus6Curve"};
+export{
+"exampleMap",
+"example", 
+"specialBaseLocus", 
+"parametrizeSpecialBaseLocus", 
+"nonMinimalAssociatedK3surface", 
+"specialRationalMap",
+"randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegree10EGenus6Curve"
+};
 
 dir := searchPath "TrisecantFlops/SRM.m2";
 if #dir == 0 then error "can't locate directory TrisecantFLops";
@@ -112,7 +120,7 @@ randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegre
    projectiveVariety(D,MinimalGenerators=>false,Saturate=>false)
 );
 
-exampleMap = method(Options => {Verbose => false});
+exampleMap = method(Options => {Verbose => true});
 EXmap := local EXmap;
 surface EmbeddedProjectiveVariety := X -> X#"SurfaceContainedInTheFourfold";
 extend MultirationalMap := o -> Phi -> Phi.cache#"extension";
@@ -123,6 +131,7 @@ exampleMap ZZ := o -> i -> (
     f := example(i,Verbose=>o.Verbose);
     X := specialCubicFourfold(specialBaseLocus f,ideal source f,InputCheck=>0,NumNodes=>(last N_i));
     (surface X).cache#"euler" = last E_i;
+    (surface X).cache#"rationalParametrization" = check multirationalMap({parametrizeSpecialBaseLocus f},surface X);
     Y := projectiveVariety(target f,MinimalGenerators=>false,Saturate=>false);
     T := projectiveVariety(nonMinimalAssociatedK3surface i,MinimalGenerators=>false,Saturate=>false);
     if i == 7 then Y = specialGushelMukaiFourfold(T,Y,InputCheck=>0);
@@ -155,8 +164,22 @@ exampleMap ZZ := o -> i -> (
         );
         (inverse F).cache#"extension" = Ge;
         X.cache#"rationalParametrization" = inverse F;
+        assert(f#"inverse" =!= null);
+        (surface Y).cache#"rationalParametrization" = check multirationalMap({parametrizeSpecialBaseLocus inverse f},surface Y);
     );
     EXmap_i = F
+);
+
+exampleMap (Nothing,ZZ) := o -> (nu,i) -> (
+    f := multirationalMap example(null,i,Verbose=>o.Verbose);
+    assert(ideal ring source f === ideal ring source exampleMap(i,Verbose=>o.Verbose));
+    f
+);
+
+exampleMap (ZZ,Nothing) := o -> (i,nu) -> (
+    g := multirationalMap example(i,null,Verbose=>o.Verbose);
+    assert(ideal ring source g === ideal ring target exampleMap(i,Verbose=>o.Verbose));
+    g
 );
 
 load (dir|"doc.m2");
