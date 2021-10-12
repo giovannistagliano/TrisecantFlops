@@ -18,7 +18,7 @@ PARA{"The commands ",TT "example(,i)"," and ",TT "example(i,)"," produce, respec
 EXAMPLE {"describe example(,3)", "describe example(3,)"},
 Caveat => {"The output of this function is an object of class ",TT "SpecialRationalMap"," which will be deprecated in future versions. It is recommended to use the more modern function ",TO exampleMap,"."},
 SeeAlso => {exampleMap}}
-document {Key => {exampleMap,(exampleMap,ZZ),[exampleMap,Verbose]}, 
+document {Key => {exampleMap,(exampleMap,ZZ),(exampleMap,ZZ,Nothing),(exampleMap,Nothing,ZZ),[exampleMap,Verbose]}, 
 Headline => "examples of Trisecant Flops (new version)", 
 Usage => "exampleMap i", 
 Inputs => {"i" => ZZ => {"an integer between 0 and 17"}},
