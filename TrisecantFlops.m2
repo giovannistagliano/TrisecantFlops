@@ -1,23 +1,19 @@
--- These are the commands to install and view the documentation:
---   installPackage "TrisecantFlops";
---   viewHelp TrisecantFlops
-----------------------------------------------------------------
-
-if version#"VERSION" < "1.18" then error "this package requires Macaulay2 version 1.17 or newer";
 
 newPackage(
        "TrisecantFlops",
-    	Version => "1.3", 
+    	Version => "1.4", 
         Date => "October 13, 2021",
     	Headline => "Some examples of Trisecant Flops",
         Authors => {{Name => "Giovanni Staglianò", Email => "giovannistagliano@gmail.com"}},
-        PackageImports => {"PrimaryDecomposition","SpecialFanoFourfolds"},
+        PackageImports => {"PrimaryDecomposition"},
         PackageExports => {"SpecialFanoFourfolds"},
         AuxiliaryFiles => true,
-        CacheExampleOutput => true,
+        CacheExampleOutput => false,
         DebuggingMode => false,
         Reload => false
 );
+
+if version#"VERSION" < "1.18" then error "this package requires Macaulay2 version 1.18 or newer";
 
 if SpecialFanoFourfolds.Options.Version < "2.4" then (
     <<endl<<"Your version of the SpecialFanoFourfolds package is outdated (required version 2.4 or newer);"<<endl;
@@ -29,15 +25,7 @@ if SpecialFanoFourfolds.Options.Version < "2.4" then (
     error "required SpecialFanoFourfolds package version 2.4 or newer";
 );
 
-export{
-"exampleMap",
-"example", 
-"specialBaseLocus", 
-"parametrizeSpecialBaseLocus", 
-"nonMinimalAssociatedK3surface", 
-"specialRationalMap",
-"randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegree10EGenus6Curve"
-};
+export{"trisecantFlop","specialRationalMap"};
 
 dir = TrisecantFlops#"auxiliary files";
 
@@ -117,11 +105,11 @@ randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegre
    projectiveVariety(D,MinimalGenerators=>false,Saturate=>false)
 );
 
-exampleMap = method(Options => {Verbose => true});
+trisecantFlop = method(Options => {Verbose => false});
 EXmap := local EXmap;
 surface EmbeddedProjectiveVariety := X -> X#"SurfaceContainedInTheFourfold";
 extend MultirationalMap := o -> Phi -> Phi.cache#"extension";
-exampleMap ZZ := o -> i -> (
+trisecantFlop ZZ := o -> i -> (
     if instance(EXmap_i,MultirationalMap) then return EXmap_i;
     N := {(0,5),(1,0),(2,3),(3,0),(4,1),(5,6),(6,0),(7,1),(8,0),(9,0),(10,0),(11,3),(12,3),(13,0),(14,4),(15,0),(16,3),(17,0)};
     E := {(0,-23),(1,11),(2,-14),(3,13),(4,-1),(5,-32),(6,27),(7,18),(8,46),(9,70),(10,14),(11,-14),(12,-14),(13,8),(14,-20),(15,29),(16,-2),(17,16)};
@@ -167,15 +155,15 @@ exampleMap ZZ := o -> i -> (
     EXmap_i = F
 );
 
-exampleMap (Nothing,ZZ) := o -> (nu,i) -> (
+trisecantFlop (Nothing,ZZ) := o -> (nu,i) -> (
     f := multirationalMap example(null,i,Verbose=>o.Verbose);
-    assert(ideal ring source f === ideal ring source exampleMap(i,Verbose=>o.Verbose));
+    assert(ideal ring source f === ideal ring source trisecantFlop(i,Verbose=>o.Verbose));
     f
 );
 
-exampleMap (ZZ,Nothing) := o -> (i,nu) -> (
+trisecantFlop (ZZ,Nothing) := o -> (i,nu) -> (
     g := multirationalMap example(i,null,Verbose=>o.Verbose);
-    assert(ideal ring source g === ideal ring target exampleMap(i,Verbose=>o.Verbose));
+    assert(ideal ring source g === ideal ring target trisecantFlop(i,Verbose=>o.Verbose));
     g
 );
 
