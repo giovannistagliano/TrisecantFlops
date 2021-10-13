@@ -8,7 +8,7 @@ if version#"VERSION" < "1.18" then error "this package requires Macaulay2 versio
 newPackage(
        "TrisecantFlops",
     	Version => "1.3", 
-        Date => "October 10, 2021",
+        Date => "October 13, 2021",
     	Headline => "Some examples of Trisecant Flops",
         Authors => {{Name => "Giovanni Staglianò", Email => "giovannistagliano@gmail.com"}},
         PackageImports => {"PrimaryDecomposition","SpecialFanoFourfolds"},
@@ -39,10 +39,7 @@ export{
 "randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegree10EGenus6Curve"
 };
 
-dir := searchPath "TrisecantFlops/SRM.m2";
-if #dir == 0 then error "can't locate directory TrisecantFLops";
-dir = (first dir)|"TrisecantFlops/";
--- <<"dir: "<<dir<<endl;
+dir = TrisecantFlops#"auxiliary files";
 
 load (dir|"SRM.m2");
 
