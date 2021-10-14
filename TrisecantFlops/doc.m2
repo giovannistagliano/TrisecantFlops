@@ -2,7 +2,8 @@ beginDocumentation()
 
 document {Key => TrisecantFlops, 
 Headline => "Some examples of trisecant flops",
-Contributors => {UL {{"Francesco Russo <",HREF{"mailto: frusso@dmi.unict.it","frusso@dmi.unict.it"},">"}}}},
+Contributors => {UL {{"Francesco Russo <",HREF{"mailto: frusso@dmi.unict.it","frusso@dmi.unict.it"},">"}}},
+PARA {"See the function ",TO2{(trisecantFlop,ZZ),"trisecantFlop"},"."}}
 
 document {Key => {"Examples of trisecant flops using the old version of the package"},
 Usage => "example i", 
@@ -36,9 +37,9 @@ EXAMPLE {"///for i to 17 do (<<i; time example i)
 16     -- used 625.068 seconds
 17     -- used 31.1299 seconds
 ///;"},
-SeeAlso => {trisecantFlop}}
+SeeAlso => {(trisecantFlop,ZZ)}}
 
-document {Key => {trisecantFlop,(trisecantFlop,ZZ),(trisecantFlop,ZZ,Nothing),(trisecantFlop,Nothing,ZZ),[trisecantFlop,Verbose]}, 
+document {Key => {(trisecantFlop,ZZ),(trisecantFlop,ZZ,Nothing),(trisecantFlop,Nothing,ZZ),[trisecantFlop,Verbose]}, 
 Headline => "examples of Trisecant Flops", 
 Usage => "trisecantFlop i", 
 Inputs => {"i" => ZZ => {"an integer between 0 and 17"}},
@@ -55,5 +56,5 @@ undocumented {specialRationalMap,
              (specialRationalMap,Ideal,ZZ,ZZ),
              (specialRationalMap,RationalMap,Ideal,ZZ,ZZ),
              (specialRationalMap,RationalMap,RationalMap,ZZ,ZZ),
-             (specialRationalMap,RationalMap,ZZ,ZZ)};
+             (specialRationalMap,RationalMap,ZZ,ZZ)}
 
