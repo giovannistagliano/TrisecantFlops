@@ -39,7 +39,7 @@ EXAMPLE {"///for i to 17 do (<<i; time example i)
 ///;"},
 SeeAlso => {(trisecantFlop,ZZ)}}
 
-document {Key => {(trisecantFlop,ZZ),(trisecantFlop,ZZ,Nothing),(trisecantFlop,Nothing,ZZ),[trisecantFlop,Verbose]}, 
+document {Key => {trisecantFlop,(trisecantFlop,ZZ),(trisecantFlop,ZZ,Nothing),(trisecantFlop,Nothing,ZZ),[trisecantFlop,Verbose]}, 
 Headline => "examples of Trisecant Flops", 
 Usage => "trisecantFlop i", 
 Inputs => {"i" => ZZ => {"an integer between 0 and 17"}},
