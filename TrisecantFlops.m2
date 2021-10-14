@@ -2,7 +2,7 @@
 newPackage(
        "TrisecantFlops",
     	Version => "1.4", 
-        Date => "October 13, 2021",
+        Date => "October 14, 2021",
     	Headline => "Some examples of Trisecant Flops",
         Authors => {{Name => "Giovanni Staglianò", Email => "giovannistagliano@gmail.com"}},
         PackageImports => {"PrimaryDecomposition"},
@@ -25,7 +25,7 @@ if SpecialFanoFourfolds.Options.Version < "2.4" then (
     error "required SpecialFanoFourfolds package version 2.4 or newer";
 );
 
-export{"trisecantFlop","specialRationalMap"};
+export{"specialRationalMap"};
 
 dir = TrisecantFlops#"auxiliary files";
 
@@ -105,7 +105,6 @@ randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegre
    projectiveVariety(D,MinimalGenerators=>false,Saturate=>false)
 );
 
-trisecantFlop = method(Options => {Verbose => false});
 EXmap := local EXmap;
 surface EmbeddedProjectiveVariety := X -> X#"SurfaceContainedInTheFourfold";
 extend MultirationalMap := o -> Phi -> Phi.cache#"extension";
