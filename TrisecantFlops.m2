@@ -1,8 +1,8 @@
 
 newPackage(
        "TrisecantFlops",
-    	Version => "1.4", 
-        Date => "October 14, 2021",
+    	Version => "1.5", 
+        Date => "August 3, 2022",
     	Headline => "Some examples of Trisecant Flops",
         Authors => {{Name => "Giovanni Staglianò", Email => "giovannistagliano@gmail.com"}},
         PackageImports => {"PrimaryDecomposition"},
@@ -13,17 +13,19 @@ newPackage(
         Reload => false
 );
 
-if version#"VERSION" < "1.18" then error "this package requires Macaulay2 version 1.18 or newer";
+if version#"VERSION" < "1.20" then error "this package requires Macaulay2 version 1.20 or newer";
 
-if SpecialFanoFourfolds.Options.Version < "2.4" then (
-    <<endl<<"Your version of the SpecialFanoFourfolds package is outdated (required version 2.4 or newer);"<<endl;
+if SpecialFanoFourfolds.Options.Version < "2.6" then (
+    <<endl<<"Your version of the SpecialFanoFourfolds package is outdated (required version 2.6 or newer);"<<endl;
     <<"you can manually download the latest version from"<<endl;
     <<"https://github.com/Macaulay2/M2/tree/development/M2/Macaulay2/packages."<<endl;
     <<"To automatically download the latest version of SpecialFanoFourfolds in your current directory,"<<endl;
     <<"you may run the following Macaulay2 code:"<<endl<<"***"<<endl<<endl;
     <<///run "curl -s -o SpecialFanoFourfolds.m2 https://raw.githubusercontent.com/Macaulay2/M2/development/M2/Macaulay2/packages/SpecialFanoFourfolds.m2";///<<endl<<endl<<"***"<<endl;
-    error "required SpecialFanoFourfolds package version 2.4 or newer";
+    error "required SpecialFanoFourfolds package version 2.6 or newer";
 );
+
+debug SpecialFanoFourfolds;
 
 export{"specialRationalMap"};
 
@@ -106,21 +108,21 @@ randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegre
 );
 
 EXmap := local EXmap;
-surface EmbeddedProjectiveVariety := X -> X#"SurfaceContainedInTheFourfold";
 extend MultirationalMap := o -> Phi -> Phi.cache#"extension";
 trisecantFlop ZZ := o -> i -> (
     if instance(EXmap_i,MultirationalMap) then return EXmap_i;
     N := {(0,5),(1,0),(2,3),(3,0),(4,1),(5,6),(6,0),(7,1),(8,0),(9,0),(10,0),(11,3),(12,3),(13,0),(14,4),(15,0),(16,3),(17,0)};
     E := {(0,-23),(1,11),(2,-14),(3,13),(4,-1),(5,-32),(6,27),(7,18),(8,46),(9,70),(10,14),(11,-14),(12,-14),(13,8),(14,-20),(15,29),(16,-2),(17,16)};
+    mm := {(0,3),(1,2),(2,2),(3,2),(4,2),(5,3),(6,3),(7,3),(8,5),(9,5),(10,5),(11,3),(12,3),(13,3),(14,5),(15,5),(16,6),(17,5)};
     f := example(i,Verbose=>o.Verbose);
-    X := specialCubicFourfold(specialBaseLocus f,ideal source f,InputCheck=>0,NumNodes=>(last N_i));
+    X := specialFourfold(specialBaseLocus f,ideal source f,InputCheck=>0,NumNodes=>(last N_i));
     (surface X).cache#"euler" = last E_i;
     (surface X).cache#"rationalParametrization" = check multirationalMap({parametrizeSpecialBaseLocus f},surface X);
-    Y := projectiveVariety(target f,MinimalGenerators=>false,Saturate=>false);
+    Y := new AssociatedFourfold from projectiveVariety(target f,MinimalGenerators=>false,Saturate=>false);
     T := projectiveVariety(nonMinimalAssociatedK3surface i,MinimalGenerators=>false,Saturate=>false);
-    if i == 7 then Y = specialGushelMukaiFourfold(T,Y,InputCheck=>0);
-    if i == 15 then Y = specialCubicFourfold(T,Y,InputCheck=>0,NumNodes=>(last N_15)); 
-    if i != 7 and i != 15 then Y#"SurfaceContainedInTheFourfold" = T;
+    if i == 6 or i == 7 or i == 8 then Y = specialFourfold(T,Y,InputCheck=>0);
+    if i == 15 then Y = specialFourfold(T,Y,InputCheck=>0,NumNodes=>(last N_15)); 
+    if i != 6 and i != 7 and i != 8 and i != 15 then Y#"SurfaceContainedInTheFourfold" = {T};
     F := multirationalMap f#"rationalMap";
     assert(ring target F === ring Y);
     F#"target" = Y;
@@ -130,6 +132,10 @@ trisecantFlop ZZ := o -> i -> (
     assert(ring target Fe === ring Y);
     Fe#"target" = Y;
     F.cache#"extension" = Fe;
+    mu := toRationalMap Fe;
+    (mu#"map").cache#"multiplicityFanoMap" = last mm_i;
+    (surface X).cache#("fanoMap",ambient X) = mu;
+    (surface X).cache#("surfaceDeterminingInverseOfFanoMap",ideal X) = T;
     if F#"inverse" =!= null or not(i == 10 or i == 14 or i == 16 or i == 17) then (
         assert(F#"inverse" =!= null);
         assert(ring target inverse F === ring X);
