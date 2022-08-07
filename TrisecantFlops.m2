@@ -1,16 +1,16 @@
 
 newPackage(
        "TrisecantFlops",
-    	Version => "1.5", 
-        Date => "August 3, 2022",
-    	Headline => "Some examples of Trisecant Flops",
-        Authors => {{Name => "Giovanni Staglianò", Email => "giovannistagliano@gmail.com"}},
-        PackageImports => {"PrimaryDecomposition"},
-        PackageExports => {"SpecialFanoFourfolds"},
-        AuxiliaryFiles => true,
-        CacheExampleOutput => false,
-        DebuggingMode => false,
-        Reload => false
+       Version => "1.5", 
+       Date => "August 7, 2022",
+       Headline => "Some examples of Trisecant Flops",
+       Authors => {{Name => "Giovanni Staglianò", Email => "giovanni.stagliano@unict.it"}},
+       PackageImports => {"PrimaryDecomposition"},
+       PackageExports => {"SpecialFanoFourfolds"},
+       AuxiliaryFiles => true,
+       CacheExampleOutput => false,
+       DebuggingMode => false,
+       Reload => false
 );
 
 if version#"VERSION" < "1.20" then error "this package requires Macaulay2 version 1.20 or newer";
@@ -118,11 +118,9 @@ trisecantFlop ZZ := o -> i -> (
     X := specialFourfold(specialBaseLocus f,ideal source f,InputCheck=>0,NumNodes=>(last N_i));
     (surface X).cache#"euler" = last E_i;
     (surface X).cache#"rationalParametrization" = check multirationalMap({parametrizeSpecialBaseLocus f},surface X);
-    Y := new AssociatedFourfold from projectiveVariety(target f,MinimalGenerators=>false,Saturate=>false);
+    Y := projectiveVariety(target f,MinimalGenerators=>false,Saturate=>false);
     T := projectiveVariety(nonMinimalAssociatedK3surface i,MinimalGenerators=>false,Saturate=>false);
-    if i == 6 or i == 7 or i == 8 then Y = specialFourfold(T,Y,InputCheck=>0);
-    if i == 15 then Y = specialFourfold(T,Y,InputCheck=>0,NumNodes=>(last N_15)); 
-    if i != 6 and i != 7 and i != 8 and i != 15 then Y#"SurfaceContainedInTheFourfold" = {T};
+    if i == 15 then Y = specialFourfold(T,Y,InputCheck=>0,NumNodes=>(last N_15)) else Y = specialFourfold(T,Y,InputCheck=>0);
     F := multirationalMap f#"rationalMap";
     assert(ring target F === ring Y);
     F#"target" = Y;
