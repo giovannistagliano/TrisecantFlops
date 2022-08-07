@@ -1,7 +1,7 @@
 
 newPackage(
        "TrisecantFlops",
-       Version => "1.5", 
+       Version => "1.6", 
        Date => "August 7, 2022",
        Headline => "Some examples of Trisecant Flops",
        Authors => {{Name => "Giovanni Staglianò", Email => "giovanni.stagliano@unict.it"}},
