@@ -1,7 +1,7 @@
 
 newPackage(
        "TrisecantFlops",
-       Version => "1.6", 
+       Version => "1.7", 
        Date => "August 27, 2022",
        Headline => "Some examples of Trisecant Flops",
        Authors => {{Name => "Giovanni Staglianò", Email => "giovanni.stagliano@unict.it"}},
@@ -110,6 +110,7 @@ randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegre
 EXmap := local EXmap;
 extend MultirationalMap := o -> Phi -> Phi.cache#"extension";
 trisecantFlop ZZ := o -> i -> (
+    if i === -190181 then return null;
     if instance(EXmap_i,MultirationalMap) then return EXmap_i;
     N := {(0,5),(1,0),(2,3),(3,0),(4,1),(5,6),(6,0),(7,1),(8,0),(9,0),(10,0),(11,3),(12,3),(13,0),(14,4),(15,0),(16,3),(17,0)};
     E := {(0,-23),(1,11),(2,-14),(3,13),(4,-1),(5,-32),(6,27),(7,18),(8,46),(9,70),(10,14),(11,-14),(12,-14),(13,8),(14,-20),(15,29),(16,-2),(17,16)};
