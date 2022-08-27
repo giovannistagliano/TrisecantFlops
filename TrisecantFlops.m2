@@ -2,7 +2,7 @@
 newPackage(
        "TrisecantFlops",
        Version => "1.6", 
-       Date => "August 7, 2022",
+       Date => "August 27, 2022",
        Headline => "Some examples of Trisecant Flops",
        Authors => {{Name => "Giovanni Staglianò", Email => "giovanni.stagliano@unict.it"}},
        PackageImports => {"PrimaryDecomposition"},
@@ -27,7 +27,7 @@ if SpecialFanoFourfolds.Options.Version < "2.6" then (
 
 debug SpecialFanoFourfolds;
 
-export{"specialRationalMap"};
+export{"specialRationalMap","exampleOfRationalIntersectionsOfThreeQuadricsInP7"};
 
 dir = TrisecantFlops#"auxiliary files";
 
@@ -170,5 +170,7 @@ trisecantFlop (ZZ,Nothing) := o -> (i,nu) -> (
     g
 );
 
-load (dir|"doc.m2");
 
+load (dir|"prebuilt-examples.dat");
+
+load (dir|"doc.m2");
