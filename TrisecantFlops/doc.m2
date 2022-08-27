@@ -57,4 +57,6 @@ undocumented {specialRationalMap,
              (specialRationalMap,RationalMap,Ideal,ZZ,ZZ),
              (specialRationalMap,RationalMap,RationalMap,ZZ,ZZ),
              (specialRationalMap,RationalMap,ZZ,ZZ)}
+             
+undocumented {exampleOfRationalIntersectionsOfThreeQuadricsInP7}
 
