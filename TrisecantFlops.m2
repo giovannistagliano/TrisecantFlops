@@ -144,7 +144,7 @@ trisecantFlop ZZ := o -> i -> (
         assert(ring target Ge === ring X);
         Ge#"target" = X;
         if i == 7 then (
-            assert(ideal ring source Ge === ideal grassmannianHull Y);
+            assert(ideal ring source Ge === ideal ambientFivefold Y);
             (surface Y).cache#"euler" = 24;
         );
         if i == 15 then (
