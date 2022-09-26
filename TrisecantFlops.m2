@@ -27,7 +27,7 @@ if SpecialFanoFourfolds.Options.Version < "2.6" then (
 
 debug SpecialFanoFourfolds;
 
-export{"specialRationalMap","exampleOfRationalIntersectionsOfThreeQuadricsInP7"};
+export{"specialRationalMap"};
 
 dir = TrisecantFlops#"auxiliary files";
 
@@ -170,8 +170,5 @@ trisecantFlop (ZZ,Nothing) := o -> (i,nu) -> (
     assert(ideal ring source g === ideal ring target trisecantFlop(i,Verbose=>o.Verbose));
     g
 );
-
-
-load (dir|"prebuilt-examples.dat");
 
 load (dir|"doc.m2");
