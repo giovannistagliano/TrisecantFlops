@@ -151,7 +151,7 @@ inverse (SpecialRationalMap) := (psi) -> (
 inverseMap (SpecialRationalMap) := o -> (psi) -> (
    if psi#"inverse" =!= null then return psi#"inverse" else (
         <<"--warning: data of inverse map not found -- this computation will take a lot of time"<<endl;
-        return inverseMap(rationalMap psi,MathMode=>o.MathMode,BlowUpStrategy=>o.BlowUpStrategy,Verbose=>o.Verbose);
+        return inverseMap(rationalMap psi,Certify=>o.Certify,BlowUpStrategy=>o.BlowUpStrategy,Verbose=>o.Verbose);
    );
 );
 
