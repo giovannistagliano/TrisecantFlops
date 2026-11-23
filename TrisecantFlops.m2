@@ -1,8 +1,8 @@
 
 newPackage(
        "TrisecantFlops",
-       Version => "1.7", 
-       Date => "August 27, 2022",
+       Version => "1.8", 
+       Date => "November 23, 2026",
        Headline => "Some examples of Trisecant Flops",
        Authors => {{Name => "Giovanni Staglianò", Email => "giovanni.stagliano@unict.it"}},
        PackageImports => {"PrimaryDecomposition"},
@@ -13,17 +13,7 @@ newPackage(
        Reload => false
 );
 
-if version#"VERSION" < "1.20" then error "this package requires Macaulay2 version 1.20 or newer";
-
-if SpecialFanoFourfolds.Options.Version < "2.6" then (
-    <<endl<<"Your version of the SpecialFanoFourfolds package is outdated (required version 2.6 or newer);"<<endl;
-    <<"you can manually download the latest version from"<<endl;
-    <<"https://github.com/Macaulay2/M2/tree/development/M2/Macaulay2/packages."<<endl;
-    <<"To automatically download the latest version of SpecialFanoFourfolds in your current directory,"<<endl;
-    <<"you may run the following Macaulay2 code:"<<endl<<"***"<<endl<<endl;
-    <<///run "curl -s -o SpecialFanoFourfolds.m2 https://raw.githubusercontent.com/Macaulay2/M2/development/M2/Macaulay2/packages/SpecialFanoFourfolds.m2";///<<endl<<endl<<"***"<<endl;
-    error "required SpecialFanoFourfolds package version 2.6 or newer";
-);
+if SpecialFanoFourfolds.Options.Version >= "2.8.1" then error "the package TrisecantFlops is obsolete and is not compatible with SpecialFanoFourfolds 2.8.1 or newer; it requires an older version of SpecialFanoFourfolds";
 
 debug SpecialFanoFourfolds;
 
