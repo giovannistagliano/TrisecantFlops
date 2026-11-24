@@ -1,164 +1,92 @@
 
 newPackage(
-       "TrisecantFlops",
-       Version => "1.8", 
-       Date => "November 23, 2026",
-       Headline => "Some examples of Trisecant Flops",
-       Authors => {{Name => "Giovanni Staglianò", Email => "giovanni.stagliano@unict.it"}},
-       PackageImports => {"PrimaryDecomposition"},
-       PackageExports => {"SpecialFanoFourfolds"},
-       AuxiliaryFiles => true,
-       CacheExampleOutput => false,
-       DebuggingMode => false,
-       Reload => false
+    "TrisecantFlops",
+    Version => "2.0",
+    Date => "November 24, 2026",
+    Headline => "Some examples of trisecant flops",
+    Authors => {{Name => "Giovanni Staglianò", Email => "giovanni.stagliano@unict.it"}},
+    PackageExports => {"SpecialFanoFourfolds"},
+    DebuggingMode => false,
+    Reload => false
 );
 
-if SpecialFanoFourfolds.Options.Version >= "2.8.1" then error "the package TrisecantFlops is obsolete and is not compatible with SpecialFanoFourfolds 2.8.1 or newer; it requires an older version of SpecialFanoFourfolds";
+if SpecialFanoFourfolds.Options.Version < "2.8.1" then error "the package SpecialFanoFourfolds is outdated (required version 2.8.1 or newer); see updatePackage";
 
-debug SpecialFanoFourfolds;
+importFrom_SpecialFanoFourfolds {"availableExamples","fanoMap","surfaceDeterminingInverseOfFanoMap"};
 
-export{"specialRationalMap"};
+-- The i-th trisecant flop is obtained from example(toString i,1) of the local examples archive of SpecialFanoFourfolds:
+-- it is the restriction to the cubic fourfold of its Fano map (stored in the archive).
+-- i => (degree and sectional genus of the surface contained in the cubic fourfold, discriminant)
+TrisecantFlopsInArchive = hashTable {
+    0 => (9,2,42), 1 => (8,3,14), 2 => (7,0,26), 3 => (10,6,38), 4 => (7,1,26), 5 => (8,0,38),
+    6 => (11,8,14), 7 => (10,6,14), 8 => (13,12,14), 9 => (14,15,14), 10 => (11,7,38), 11 => (8,1,38),
+    12 => (8,1,38), 13 => (8,2,14), 14 => (8,0,26), 15 => (13,11,26), 16 => (11,6,26), 17 => (11,7,26)
+};
 
-dir = TrisecantFlops#"auxiliary files";
-
-load (dir|"SRM.m2");
-
-eX := local eX;
-
-example = method(Options => {Verbose => false});
-example (ZZ) := o -> (jj) -> (
-    if jj < 0 or jj > 17 then error "expected integer between 0 and 17";
-    if class eX_jj =!= SpecialRationalMap then (
-        nfile := dir|toString(jj)|".dat";
-        if o.Verbose then <<"-- loading data file "<<nfile<<"   ";
-        F := get nfile;
-        if o.Verbose then <<"done!"<<endl<<"-- valuing data file... ";
-        F = value F;
-        if o.Verbose then <<"done!"<<endl<<"-- executing data file...";
-        eX_jj = F();
-        if o.Verbose then <<"done!"<<endl;
-    ); 
-    return eX_jj;
+trisecantFlopFourfold = (i,verb) -> (
+    if i < 0 or i > 17 then error "expected integer between 0 and 17";
+    str := toString i;
+    (d,g,D) := TrisecantFlopsInArchive#i;
+    hint := "; the reference examples archive can be downloaded from GitHub with store \"@\" (warning: this replaces the current local examples archive, which can first be saved with export localExamplesArchive())";
+    pre := "trisecantFlop " | str | " requires example(\"" | str | "\",1) of the local examples archive";
+    if not member((1,str),availableExamples()) then error(pre | ", which is not present" | hint);
+    X := example(str,1,Verbose=>verb);
+    S := surface X;
+    if not (instance(X,CubicFourfold) and char coefficientRing X == 10000019 and degree S == d and sectionalGenus S == g and discriminant X == D)
+    then error(pre | ", which does not have the expected invariants (cubic fourfold over ZZ/10000019 containing a surface of degree " | toString d | " and sectional genus " | toString g | ", discriminant " | toString D | ")" | hint);
+    if not (S.cache#?("fanoMap",ambientFivefold X) and S.cache#?("surfaceDeterminingInverseOfFanoMap",ideal X))
+    then error(pre | ", which does not contain the data of the Fano map" | hint);
+    X
 );
 
-nonMinimalAssociatedK3surface = method();
-nonMinimalAssociatedK3surface (ZZ) := (jj) -> (
-    f := example jj;
-    if jj == 10 or jj == 14 or jj == 16 or jj == 17 then return (value get(dir|toString(jj)|"ass.dat"))(gens ambient target f) else return trim lift(specialBaseLocus inverse f,ambient target f);
-);
-
-eY := local eY;
-
-example (Nothing,ZZ) := o -> (nu,jj) -> (
-    if jj < 0 or jj > 17 then error "expected integer between 0 and 17";
-    if jj == 15 then error "not implemented yet";
-    if class eY_jj =!= RationalMap then (
-        nfile := dir|"fromXtoY"|toString(jj)|".dat";
-        if o.Verbose then <<"-- loading data file "<<nfile<<"   ";
-        F := get nfile;
-        if o.Verbose then <<"done!"<<endl<<"-- valuing data file... ";
-        F = value F;
-        if o.Verbose then <<"done!"<<endl<<"-- executing data file...";
-        eY_jj = F();
-        if o.Verbose then <<"done!"<<endl;
-    ); 
-    return eY_jj;
-);
-
-eW := local eW;
-
-example (ZZ,Nothing) := o -> (jj,nu) -> (
-    if jj < 0 or jj > 17 then error "expected integer between 0 and 17";
-    if jj == 15 then error "not implemented yet";
-    if class eW_jj =!= RationalMap then (
-        nfile := dir|"fromWtoY"|toString(jj)|".dat";
-        if o.Verbose then <<"-- loading data file "<<nfile<<"   ";
-        F := get nfile;
-        if o.Verbose then <<"done!"<<endl<<"-- valuing data file... ";
-        F = value F;
-        if o.Verbose then <<"done!"<<endl<<"-- executing data file...";
-        eW_jj = F();
-        if o.Verbose then <<"done!"<<endl;
-    ); 
-    return eW_jj;
-);
-
-randomQuinticDelPezzoSurfaceIntersectingTheSpecialBaseLocusOfExample7AlongADegree10EGenus6Curve = () -> (
-   S := specialBaseLocus example 7;
-   x := gens ring S;
-   q := ideal(x_4+1011695*x_5,x_3+2243139*x_5,x_2-480752*x_5,x_1+771527*x_5,x_0); -- singular point of S
-   h := (rationalMap q)|S;
-   ideal h;
-   M := random(1,ring S) * matrix (h#"maps")_0 + random(0,ring S) * matrix (h#"maps")_1;
-   assert(h == rationalMap(source h,target h,M));
-   J := top ideal lift(M,ring S);
-   D := first select(unique apply(entries transpose mingens kernel matrix select(entries transpose syz gens J,g -> max flatten degrees ideal g == 1),g' -> trim ideal g'),i -> dim i >= 1);
-   assert(? D == "smooth surface of degree 5 and sectional genus 1 in PP^5 cut out by 5 hypersurfaces of degree 2" and dim(D + S) == 2 and degree(D + S) == 10);
-   projectiveVariety(D,MinimalGenerators=>false,Saturate=>false)
-);
-
-EXmap := local EXmap;
-extend MultirationalMap := o -> Phi -> Phi.cache#"extension";
 trisecantFlop ZZ := o -> i -> (
-    if i === -190181 then return null;
-    if instance(EXmap_i,MultirationalMap) then return EXmap_i;
-    N := {(0,5),(1,0),(2,3),(3,0),(4,1),(5,6),(6,0),(7,1),(8,0),(9,0),(10,0),(11,3),(12,3),(13,0),(14,4),(15,0),(16,3),(17,0)};
-    E := {(0,-23),(1,11),(2,-14),(3,13),(4,-1),(5,-32),(6,27),(7,18),(8,46),(9,70),(10,14),(11,-14),(12,-14),(13,8),(14,-20),(15,29),(16,-2),(17,16)};
-    mm := {(0,3),(1,2),(2,2),(3,2),(4,2),(5,3),(6,3),(7,3),(8,5),(9,5),(10,5),(11,3),(12,3),(13,3),(14,5),(15,5),(16,6),(17,5)};
-    f := example(i,Verbose=>o.Verbose);
-    X := specialFourfold(specialBaseLocus f,ideal source f,InputCheck=>0,NumNodes=>(last N_i));
-    (surface X).cache#"euler" = last E_i;
-    (surface X).cache#"rationalParametrization" = check multirationalMap({parametrizeSpecialBaseLocus f},surface X);
-    Y := projectiveVariety(target f,MinimalGenerators=>false,Saturate=>false);
-    T := projectiveVariety(nonMinimalAssociatedK3surface i,MinimalGenerators=>false,Saturate=>false);
-    if i == 15 then Y = specialFourfold(T,Y,InputCheck=>0,NumNodes=>(last N_15)) else Y = specialFourfold(T,Y,InputCheck=>0);
-    F := multirationalMap f#"rationalMap";
-    assert(ring target F === ring Y);
-    F#"target" = Y;
-    assert(ring source F === ring X);
-    F#"source" = X;
-    Fe := multirationalMap (extend f)#"rationalMap";
-    assert(ring target Fe === ring Y);
-    Fe#"target" = Y;
-    F.cache#"extension" = Fe;
-    mu := toRationalMap Fe;
-    (mu#"map").cache#"multiplicityFanoMap" = last mm_i;
-    (surface X).cache#("fanoMap",ambient X) = mu;
-    (surface X).cache#("surfaceDeterminingInverseOfFanoMap",ideal X) = T;
-    if F#"inverse" =!= null or not(i == 10 or i == 14 or i == 16 or i == 17) then (
-        assert(F#"inverse" =!= null);
-        assert(ring target inverse F === ring X);
-        (inverse F)#"target" = X;
-        assert(ring source inverse F === ring Y);
-        (inverse F)#"source" = Y;
-        Ge := multirationalMap (extend inverse f)#"rationalMap";
-        assert(ring target Ge === ring X);
-        Ge#"target" = X;
-        if i == 7 then (
-            assert(ideal ring source Ge === ideal ambientFivefold Y);
-            (surface Y).cache#"euler" = 24;
-        );
-        if i == 15 then (
-            (surface Y).cache#"euler" = last E_15;
-        );
-        (inverse F).cache#"extension" = Ge;
-        X.cache#"rationalParametrization" = inverse F;
-        assert(f#"inverse" =!= null);
-        (surface Y).cache#"rationalParametrization" = check multirationalMap({parametrizeSpecialBaseLocus inverse f},surface Y);
-    );
-    EXmap_i = F
+    X := trisecantFlopFourfold(i,o.Verbose);
+    if X.cache#?"trisecantFlop" then return X.cache#"trisecantFlop";
+    if o.Verbose then << "-- restricting the Fano map to the fourfold" << endl;
+    Mu := rationalMap fanoMap X;
+    mu := Mu|X;
+    U := surfaceDeterminingInverseOfFanoMap X;
+    W := if i == 15 then specialFourfold(U,target mu,InputCheck=>0,NumNodes=>0) else specialFourfold(U,target mu,InputCheck=>0);
+    if i == 7 then (surface W).cache#"euler" = 24;
+    if i == 15 then (surface W).cache#"euler" = 29;
+    mu#"target" = W;
+    mu#"isDominant" = true;
+    mu#"isBirational" = true;
+    mu.cache#"extension" = Mu;
+    X.cache#"trisecantFlop" = mu
 );
 
-trisecantFlop (Nothing,ZZ) := o -> (nu,i) -> (
-    f := multirationalMap example(null,i,Verbose=>o.Verbose);
-    assert(ideal ring source f === ideal ring source trisecantFlop(i,Verbose=>o.Verbose));
-    f
+extend RationalMap := o -> Phi -> (
+    if not Phi.cache#?"extension" then error "extension of the rational map not available";
+    Phi.cache#"extension"
 );
 
-trisecantFlop (ZZ,Nothing) := o -> (i,nu) -> (
-    g := multirationalMap example(i,null,Verbose=>o.Verbose);
-    assert(ideal ring source g === ideal ring target trisecantFlop(i,Verbose=>o.Verbose));
-    g
-);
+beginDocumentation()
 
-load (dir|"doc.m2");
+document {Key => TrisecantFlops,
+Headline => "Some examples of trisecant flops",
+Contributors => {UL {{"Francesco Russo <",HREF{"mailto: frusso@dmi.unict.it","frusso@dmi.unict.it"},">"}}},
+PARA {"This package provides the examples of trisecant flops from Table 1 of the paper ",HREF{"https://arxiv.org/abs/1909.01263","Trisecant Flops, their associated K3 surfaces and the rationality of some Fano fourfolds"},", by F. Russo and G. Staglianò. See the function ",TO2{(trisecantFlop,ZZ),"trisecantFlop"},"."},
+PARA {"Since version 2.0, the package does not contain any data: the examples are taken from the local examples archive of ",TO "SpecialFanoFourfolds::SpecialFanoFourfolds",", which can be obtained with ",TT "store \"@\"","."}}
+
+document {Key => {(trisecantFlop,ZZ),[trisecantFlop,Verbose]},
+Headline => "examples of trisecant flops",
+Usage => "trisecantFlop i",
+Inputs => {"i" => ZZ => {"an integer between 0 and 17"}},
+Outputs => {RationalMap => {"the i-th example of birational map ",TEX///$X\dashrightarrow W$///," in accordance to the Table 1 in the paper ",HREF{"https://arxiv.org/abs/1909.01263","Trisecant Flops, their associated K3 surfaces and the rationality of some Fano fourfolds"},"."}},
+PARA {"The cubic fourfold ",TEX///$X$///," is ",TT "example(\"i\",1)"," of the local examples archive of ",TO "SpecialFanoFourfolds::SpecialFanoFourfolds",", and the map is the restriction to ",TEX///$X$///," of its Fano map, which is returned by ",TT "extend mu",". If the example is not present in the local archive, or does not have the expected invariants, an error is raised; the reference archive can be downloaded with ",TT "store \"@\""," (note that this replaces the current local archive, which can first be saved with ",TT "export localExamplesArchive()",")."},
+PARA {"In the following, we consider the 7th example."},
+PRE ///mu = trisecantFlop 7;
+X = source mu;
+describe X
+W = target mu;
+describe W
+S = surface X;
+T = surface W;
+mu' = extend mu; -- the Fano map, defined on the ambient space of X
+F = mu'^* point W;
+(describe F, describe (F*S))///,
+PARA {"Some examples, in particular the 16th one, take a long time to load."},
+SeeAlso => {"SpecialFanoFourfolds::example(String)", "SpecialFanoFourfolds::localExamplesArchive"}}
+
+undocumented {(extend,RationalMap)}
